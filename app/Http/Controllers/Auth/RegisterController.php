@@ -1,13 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
-
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     /*
@@ -20,16 +18,13 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
     use RegistersUsers;
-
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
     protected $redirectTo = '/home';
-
     /**
      * Create a new controller instance.
      *
@@ -39,7 +34,6 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
     }
-
     /**
      * Get a validator for an incoming registration request.
      *
@@ -52,10 +46,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            
         ]);
     }
-
     /**
      * Create a new user instance after a valid registration.
      *
@@ -64,11 +56,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        //Pegando o nome original do arquivo
+        $nomeOriginal = $data['avatar']->getClientOriginalName();
+        //Montando a url necessária para acessar o arquivo corretamente
+        $caminhoimg  = 'storage/img/' . $nomeOriginal;
+        //Salvando apenas a imagem
+        $save = $data['avatar']->storeAs('public/img', $nomeOriginal);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'nivel_user' => $data['nivel-user']
+            'nivel_user' => $data['nivel-user'],
+            'img' => $caminhoimg
         ]);
     }
 }

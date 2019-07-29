@@ -67,7 +67,7 @@
                     </form>
                     <div class="row">
                         <div class="col-md-6">
-                            <a href="{{ url('auth/facebook') }}">
+                            <a href="/auth/facebook">
                                 <img src="{{ asset('img/facebook-login.png') }}">
                             </a>
                         </div>

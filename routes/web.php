@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,19 +9,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/index', function (){
-    return view('painel.index'); //acessa a pasta e dps . vem o arquivo que quer abrir
+Route::get('/index',function(){
+    return view('painel.index');
 })->middleware('checkadmin');
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
-
-//----SOCIALITE FACEBOOK
-Route::get('/auth/{provider}', 'Auth\LoginController@redirectToProvider');
-Route::get('/auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
-
+Route::get('auth/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
